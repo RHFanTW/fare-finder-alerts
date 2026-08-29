@@ -57,7 +57,7 @@ function LandingPage() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            (entry.target as HTMLElement).dataset.visible = "true";
+            (entry.target as HTMLElement).dataset["visible"] = "true";
             io.unobserve(entry.target);
           }
         }
