@@ -1,32 +1,33 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, type FormEvent } from "react";
 import { Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in — Flight Price Notifier" },
-      { name: "description", content: "Sign in or create an account to start tracking flight prices." },
-      { property: "og:title", content: "Sign in — Flight Price Notifier" },
-      { property: "og:description", content: "Sign in or create an account to start tracking flight prices." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: AuthPage,
-});
-
-function AuthPage() {
+export function AuthPage() {
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useDocumentMeta("Sign in — Flight Price Notifier", [
+    {
+      name: "description",
+      content: "Sign in or create an account to start tracking flight prices.",
+    },
+    { property: "og:title", content: "Sign in — Flight Price Notifier" },
+    {
+      property: "og:description",
+      content: "Sign in or create an account to start tracking flight prices.",
+    },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -44,7 +45,7 @@ function AuthPage() {
         });
         if (error) throw error;
       }
-      navigate({ to: "/app", replace: true });
+      navigate("/app", { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

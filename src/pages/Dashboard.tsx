@@ -1,30 +1,24 @@
-import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { useAuthUser } from "@/components/RequireAuth";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
-export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard — Flight Price Notifier" },
-      { name: "description", content: "Your flight route tracking dashboard." },
-      { property: "og:title", content: "Dashboard — Flight Price Notifier" },
-      { property: "og:description", content: "Your flight route tracking dashboard." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: AppPage,
-});
-
-function AppPage() {
-  const { user } = Route.useRouteContext();
+export function DashboardPage() {
+  const user = useAuthUser();
   const navigate = useNavigate();
-  const router = useRouter();
+
+  useDocumentMeta("Dashboard — Flight Price Notifier", [
+    { name: "description", content: "Your flight route tracking dashboard." },
+    { property: "og:title", content: "Dashboard — Flight Price Notifier" },
+    { property: "og:description", content: "Your flight route tracking dashboard." },
+    { name: "robots", content: "noindex" },
+  ]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
-    await router.invalidate();
-    navigate({ to: "/", replace: true });
+    navigate("/", { replace: true });
   }
 
   return (

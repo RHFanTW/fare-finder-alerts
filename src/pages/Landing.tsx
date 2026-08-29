@@ -1,29 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { Radar, MailCheck, CalendarX2, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier — 機票降價通知" },
-      {
-        name: "description",
-        content:
-          "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
-      },
-      { property: "og:title", content: "Flight Price Notifier — 機票降價通知" },
-      {
-        property: "og:description",
-        content:
-          "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: LandingPage,
-});
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 const FEATURES = [
   {
@@ -46,8 +25,24 @@ const FEATURES = [
   },
 ];
 
-function LandingPage() {
+export function LandingPage() {
   const ref = useRef<HTMLDivElement>(null);
+
+  useDocumentMeta("Flight Price Notifier — 機票降價通知", [
+    {
+      name: "description",
+      content:
+        "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
+    },
+    { property: "og:title", content: "Flight Price Notifier — 機票降價通知" },
+    {
+      property: "og:description",
+      content:
+        "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
+    },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ]);
 
   useEffect(() => {
     const root = ref.current;
@@ -152,9 +147,7 @@ function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-border py-8">
-        <p className="text-center text-sm text-muted-foreground">
-          © 2026 Flight Price Notifier
-        </p>
+        <p className="text-center text-sm text-muted-foreground">© 2026 Flight Price Notifier</p>
       </footer>
     </div>
   );
